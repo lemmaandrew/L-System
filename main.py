@@ -79,7 +79,7 @@ class LSystem:
             self.canvas_width // 2 if start_x is None else start_x,
             self.canvas_height // 2 if start_y is None else start_y,
             0.0,
-            False,
+            True,
         )
 
     @staticmethod
@@ -305,7 +305,7 @@ Cursor begins facing to the right
     )
     parser.add_argument("--rules", type=str, nargs="+", help=rules_help, required=True)
     seed_help = (
-        "Seed value for L-System. For example, the Barnsley fern seed would be '--seed \"D++X\"'"
+        "Seed value for L-System. For example, the Barnsley fern seed would be '--seed \"++X\"'"
     )
     parser.add_argument("--seed", type=str, help=seed_help, required=True)
     parser.add_argument(

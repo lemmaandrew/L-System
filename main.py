@@ -128,8 +128,8 @@ class LSystem:
             """
             if len(colors) == 1:
                 return colors[0]
-            if not (0.0 <= t <= 1.0):
-                raise ValueError(f"{t} is not in the domain [0.0, 1.0]")
+            # clipping to domain of [0.0, 1.0]
+            t = max(min(t, 1.0), 0.0)
             n = len(colors) - 1
             x = t * n
             i = floor(x)

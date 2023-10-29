@@ -333,7 +333,7 @@ Cursor begins facing to the right
         default=5.0,
     )
     parser.add_argument(
-        "--penwidth", type=int, help="Pen width in pixels (default 5)", default=5
+        "--penwidth", type=int, help="Pen width in pixels (default 1)", default=1
     )
     parser.add_argument(
         "--rotatedeg",

@@ -153,7 +153,7 @@ class LSystem:
         """Counts the number of draw commands that the system value will create.
         Used for color interpolation
         """
-        pen_is_down = False
+        pen_is_down = self.cursor.is_down
         draws = 0
         for _, command in self.system_value:
             match command:

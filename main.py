@@ -74,7 +74,7 @@ class LSystem:
         )
         self.canvas_draw = ImageDraw.Draw(self.canvas)
         self.system_value = seed.copy()
-        self.position_xy_angle: list[tuple[float, float, float]] = []
+        self.saved_cursors: list[Cursor] = []
         self.cursor = Cursor(
             self.canvas_width // 2 if start_x is None else start_x,
             self.canvas_height // 2 if start_y is None else start_y,
@@ -216,15 +216,16 @@ class LSystem:
                 case Command.ROTATECW:
                     self.cursor.rotate_cw(self.rotate_angle)
                 case Command.STOREPOS:
-                    self.position_xy_angle.append(
-                        (self.cursor.x, self.cursor.y, self.cursor.angle)
-                    )
+                    self.saved_cursors.append(self.cursor)
                 case Command.GOTOPOS:
-                    to_x, to_y, angle = self.position_xy_angle.pop()
+                    saved_cursor = self.saved_cursors.pop()
                     if self.cursor.is_down:
-                        draw(self.cursor.x, self.cursor.y, to_x, to_y)
+                        draw(
+                            self.cursor.x, self.cursor.y, saved_cursor.x, saved_cursor.y
+                        )
                         draws += 1
-                    self.cursor = Cursor(to_x, to_y, angle, self.cursor.is_down)
+                    saved_cursor.is_down = self.cursor.is_down
+                    self.cursor = saved_cursor
                 case _:
                     pass
 
@@ -304,9 +305,7 @@ Cursor begins facing to the right
         " For example, the Barnsley fern rule system would be '--rules X \"F+[[XU]D-XU]D-F[-FXU]D+X\" F FF'"
     )
     parser.add_argument("--rules", type=str, nargs="+", help=rules_help, required=True)
-    seed_help = (
-        "Seed value for L-System. For example, the Barnsley fern seed would be '--seed \"++X\"'"
-    )
+    seed_help = "Seed value for L-System. For example, the Barnsley fern seed would be '--seed \"++X\"'"
     parser.add_argument("--seed", type=str, help=seed_help, required=True)
     parser.add_argument(
         "--height", type=int, help="Image height in pixels", required=True
